@@ -1,3 +1,47 @@
-valami mukodj pls, sokadik proba
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vega-Lite Visualization</title>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+        }
+        #vis {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vega-Lite Visualization Stub</h1>
+    <div id="vis"></div>
 
-dsgsdfg
+    <script>
+        const spec = {
+            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+            "title": "Sample Bar Chart",
+            "data": {
+                "values": [
+                    {"category": "A", "value": 28},
+                    {"category": "B", "value": 55},
+                    {"category": "C", "value": 43},
+                    {"category": "D", "value": 91},
+                    {"category": "E", "value": 34}
+                ]
+            },
+            "mark": "bar",
+            "encoding": {
+                "x": {"field": "category", "type": "nominal", "title": "Category"},
+                "y": {"field": "value", "type": "quantitative", "title": "Value"}
+            }
+        };
+
+        vegaEmbed('#vis', spec);
+    </script>
+</body>
+</html>
