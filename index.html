@@ -18,30 +18,13 @@
     </style>
 </head>
 <body>
-    <h1>Vega-Lite Visualization Stub</h1>
+    <h1>Vega-Lite Visualization</h1>
     <div id="vis"></div>
 
     <script>
-        const spec = {
-            "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-            "title": "Sample Bar Chart",
-            "data": {
-                "values": [
-                    {"category": "A", "value": 28},
-                    {"category": "B", "value": 55},
-                    {"category": "C", "value": 43},
-                    {"category": "D", "value": 91},
-                    {"category": "E", "value": 34}
-                ]
-            },
-            "mark": "bar",
-            "encoding": {
-                "x": {"field": "category", "type": "nominal", "title": "Category"},
-                "y": {"field": "value", "type": "quantitative", "title": "Value"}
-            }
-        };
-
-        vegaEmbed('#vis', spec);
+        fetch('viz.json')
+            .then(response => response.json())
+            .then(spec => vegaEmbed('#vis', spec));
     </script>
 </body>
 </html>
