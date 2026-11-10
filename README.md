@@ -1,1 +1,1 @@
-# bazsubur-creator.github.io
+# bazsibur-creator.github.io
