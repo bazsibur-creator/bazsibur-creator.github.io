@@ -1,0 +1,32 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Monthly temperature anomaly, 1880-2023",
+  "width": "container",
+  "height": 300,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "data": {"url": "data.json"},
+  "transform": [
+    {"calculate": "datetime(datum.year, datum.month - 1, 1)", "as": "date"},
+    {
+      "window": [{"op": "mean", "field": "anomaly", "as": "trend"}],
+      "frame": [-60, 60],
+      "sort": [{"field": "date"}]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {"type": "line", "strokeWidth": 0.8, "opacity": 0.5, "color": "#8c8c8c"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal", "title": null},
+        "y": {"field": "anomaly", "type": "quantitative", "title": "Anomaly"}
+      }
+    },
+    {
+      "mark": {"type": "line", "strokeWidth": 2.5, "color": "#c0392b"},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "trend", "type": "quantitative"}
+      }
+    }
+  ]
+}

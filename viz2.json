@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "One stripe per year: average anomaly, 1880-2023",
+  "width": "container",
+  "height": 140,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "data": {"url": "data.json"},
+  "mark": "rect",
+  "encoding": {
+    "x": {
+      "field": "year",
+      "type": "ordinal",
+      "title": null,
+      "axis": {"values": [1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020], "labelAngle": 0}
+    },
+    "color": {
+      "field": "anomaly",
+      "aggregate": "mean",
+      "type": "quantitative",
+      "title": "Mean anomaly",
+      "scale": {"scheme": "redblue", "reverse": true, "domain": [-0.05, 0.4], "domainMid": 0}
+    },
+    "tooltip": [
+      {"field": "year", "type": "ordinal", "title": "Year"},
+      {"field": "anomaly", "aggregate": "mean", "type": "quantitative", "title": "Mean anomaly", "format": ".3f"}
+    ]
+  }
+}

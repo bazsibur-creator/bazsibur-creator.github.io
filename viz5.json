@@ -1,0 +1,30 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Distribution of monthly anomalies: before 1950 vs 1990 onward",
+  "width": "container",
+  "height": 300,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "data": {"url": "data.json"},
+  "transform": [
+    {"filter": "datum.year < 1950 || datum.year >= 1990"},
+    {"calculate": "datum.year < 1950 ? 'Before 1950' : '1990 onward'", "as": "period"},
+    {
+      "density": "anomaly",
+      "groupby": ["period"],
+      "extent": [-0.5, 0.9],
+      "steps": 200,
+      "as": ["anomaly", "density"]
+    }
+  ],
+  "mark": {"type": "area", "opacity": 0.55, "line": true},
+  "encoding": {
+    "x": {"field": "anomaly", "type": "quantitative", "title": "Monthly anomaly"},
+    "y": {"field": "density", "type": "quantitative", "title": "Density", "stack": null},
+    "color": {
+      "field": "period",
+      "type": "nominal",
+      "title": "Period",
+      "scale": {"domain": ["Before 1950", "1990 onward"], "range": ["#4c78a8", "#c0392b"]}
+    }
+  }
+}

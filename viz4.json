@@ -1,0 +1,33 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Average anomaly by month and decade",
+  "width": "container",
+  "height": 320,
+  "autosize": {"type": "fit", "contains": "padding"},
+  "data": {"url": "data.json"},
+  "transform": [
+    {"calculate": "floor(datum.year / 10) * 10 + 's'", "as": "decade"}
+  ],
+  "mark": "rect",
+  "encoding": {
+    "x": {"field": "decade", "type": "ordinal", "title": "Decade", "sort": "ascending", "axis": {"labelAngle": 0}},
+    "y": {
+      "field": "month",
+      "type": "ordinal",
+      "title": null,
+      "axis": {"labelExpr": "['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][datum.value - 1]"}
+    },
+    "color": {
+      "field": "anomaly",
+      "aggregate": "mean",
+      "type": "quantitative",
+      "title": "Mean anomaly",
+      "scale": {"scheme": "redblue", "reverse": true, "domain": [-0.25, 0.55], "domainMid": 0}
+    },
+    "tooltip": [
+      {"field": "decade", "type": "nominal", "title": "Decade"},
+      {"field": "month", "type": "ordinal", "title": "Month"},
+      {"field": "anomaly", "aggregate": "mean", "type": "quantitative", "title": "Mean anomaly", "format": ".3f"}
+    ]
+  }
+}

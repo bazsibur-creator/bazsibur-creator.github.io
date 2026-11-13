@@ -1,30 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Vega-Lite Visualization</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>144 Years of Temperature Anomalies</title>
     <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
     <style>
         body {
-            font-family: sans-serif;
-            margin: 40px;
+            font-family: Georgia, "Times New Roman", serif;
+            font-size: 18px;
+            line-height: 1.65;
+            color: #222;
+            max-width: 760px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        #vis {
-            width: 50%;
-            height: 400px;
-        }
+        h1 { font-size: 2.1em; line-height: 1.2; margin-bottom: 0.2em; }
+        h2 { font-size: 1.35em; margin-top: 2.2em; }
+        .byline { color: #666; font-size: 0.9em; margin-top: 0; }
+        figure { margin: 1.6em 0; }
+        figcaption { color: #666; font-size: 0.85em; margin-top: 0.4em; }
+        .vis { width: 100%; min-height: 140px; }
+        .error { color: #a00; font-family: sans-serif; font-size: 0.9em; }
+        footer { margin-top: 3em; padding-top: 1em; border-top: 1px solid #ddd; color: #666; font-size: 0.85em; }
     </style>
 </head>
 <body>
-    <h1>Vega-Lite Visualization</h1>
-    <div id="vis"></div>
+    <h1>144 Years of Temperature Anomalies: What Does a Long Series Reveal?</h1>
+    <p class="byline">A data story with Vega-Lite &middot; 1,728 monthly readings, January 1880 to December 2023</p>
+
+    <!-- INTRO -->
+    <p>
+        Any single month of weather is noise. September 1882 is the coldest reading in this dataset and
+        April 2020 the warmest, but one extreme month says very little about where things are heading.
+        A long series can say more. This story follows 1,728 monthly temperature anomalies, one for every
+        month from 1880 to 2023. An anomaly is the difference from a reference level, so a value above zero
+        means warmer than that level. The question is simple: is there a clear signal under the noise,
+        and what shape does it take?
+    </p>
+
+    <!-- SECTION 1 -->
+    <h2>First, the noise</h2>
+    <figure>
+        <div id="vis1" class="vis"></div>
+        <figcaption>Grey: every monthly reading. Red: centred ten-year average.</figcaption>
+    </figure>
+    <p>
+        The grey line is every month on record. It jumps around so much that the eye struggles to find a
+        direction. The red line, a centred ten-year average, smooths out the month-to-month swings, and
+        the direction is hard to miss: a long, slow rise.
+    </p>
+
+    <!-- SECTION 2 -->
+    <h2>One number per year</h2>
+    <figure>
+        <div id="vis2" class="vis"></div>
+        <figcaption>Each stripe is one year. Blue is below the reference level, red is above.</figcaption>
+    </figure>
+    <p>
+        Collapsing each year into a single average makes the pattern easier to read. The left edge is pale,
+        and the only years below zero are early ones: 1880 to 1883, 1886 and 1902. Since 1903, every year
+        has averaged above zero. The three warmest years in the series are 2022, 2020 and 2021.
+    </p>
+
+    <!-- SECTION 3 -->
+    <h2>Decade by decade</h2>
+    <figure>
+        <div id="vis3" class="vis"></div>
+        <figcaption>The 2020s bar covers only four years, 2020 to 2023.</figcaption>
+    </figure>
+    <p>
+        Grouping by decade shows how steady the climb is. Every decade is warmer than the one before it,
+        from about 0.01 in the 1880s to about 0.33 in the 2020s. The early decades rise unevenly, with
+        several nearly flat steps. From the 1950s on, every step is between roughly 0.02 and 0.035.
+    </p>
+
+    <!-- SECTION 4 -->
+    <h2>Is it only one season?</h2>
+    <figure>
+        <div id="vis4" class="vis"></div>
+        <figcaption>Average anomaly for each calendar month, split by decade.</figcaption>
+    </figure>
+    <p>
+        A fair objection is that the rise might come from a few seasons only. Splitting each decade by
+        calendar month answers it. In every row the right-hand side is clearly redder than the left.
+        Comparing 2000 onward with the years before 1930, all twelve months are warmer, by between about
+        0.22 (September) and 0.30 (October).
+    </p>
+
+    <!-- SECTION 5 -->
+    <h2>The whole distribution moves</h2>
+    <figure>
+        <div id="vis5" class="vis"></div>
+        <figcaption>Smoothed distribution of monthly anomalies in two periods.</figcaption>
+    </figure>
+    <p>
+        Finally, the full spread of readings. The red curve (1990 onward) looks like the blue curve
+        (before 1950) slid to the right. The spread is almost identical, so the shift is not extra
+        volatility. The average reading moves from about 0.05 to about 0.28. Before 1950, roughly one
+        month in a thousand topped 0.5. Since 1990, about nine months in a hundred have.
+    </p>
+
+    <!-- CONCLUSION -->
+    <h2>What the data says, and what it does not</h2>
+    <p>
+        Month to month, the noise hides the trend. Over 144 years it does not: the rise is steady,
+        present in every calendar month, and it shifts the whole distribution rather than just adding
+        a few hot outliers. What this dataset cannot tell us is why. It records what happened, not the
+        cause, and a story about causes needs other data.
+    </p>
+
+    <footer>
+        Data: data.json, monthly anomalies 1880-2023 (1,728 rows). <!-- TODO: add original source and baseline -->
+    </footer>
 
     <script>
-        fetch('viz.json')
-            .then(response => response.json())
-            .then(spec => vegaEmbed('#vis', spec));
+        // each chart has its own spec file: viz1.json ... viz5.json
+        const specs = [1, 2, 3, 4, 5];
+
+        specs.forEach(function (n) {
+            const target = document.getElementById('vis' + n);
+            fetch('viz' + n + '.json')
+                .then(function (response) {
+                    if (!response.ok) { throw new Error('HTTP ' + response.status); }
+                    return response.json();
+                })
+                .then(function (spec) {
+                    return vegaEmbed(target, spec, { actions: false });
+                })
+                .catch(function (err) {
+                    target.innerHTML = '<p class="error">Could not load chart ' + n + ' (' + err.message +
+                        '). Open the page through GitHub Pages or a local web server, not as a file.</p>';
+                });
+        });
     </script>
 </body>
 </html>
